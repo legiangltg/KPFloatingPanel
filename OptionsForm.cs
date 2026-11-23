@@ -31,6 +31,7 @@ namespace KPFloatingPanel
 			if (ColorDialog.ShowDialog() == DialogResult.OK)
 				pnFontColor.BackColor = ColorDialog.Color;
 		}
+
 		private List<StartGroupDropdown> drop_items;
 		private StartGroupDropdown drop_cur_item;
 		private void add_sub_groups(PwGroup group, int level, string cur_item_uuid)
@@ -45,34 +46,47 @@ namespace KPFloatingPanel
 				add_sub_groups(sub_group, level + 1, cur_item_uuid);
 			}
 		}
+
 		private void OptionsForm_Load(object sender, EventArgs e)
 		{
 			pcOptions.TabIndex = 0;
+
+			cbTheme.Items.Clear();
+			cbTheme.Items.Add("Giao diện tối hiện đại (Modern Dark)");
+			cbTheme.Items.Add("Giao diện sáng hiện đại (Modern Light)");
+			cbTheme.Items.Add("Tùy chỉnh màu (Custom)");
+			cbTheme.SelectedIndex = Math.Max(0, Math.Min(2, Options.themeMode));
+
+			cbxDirectSearch.Checked = Options.searchDirectOnPanel;
+			cbxShowDatabaseName.Checked = Options.showDatabaseName;
+			cbxCompactMode.Checked = Options.compactMode;
 
 			edPercent.Value = Options.Transparency;
 			pnPanelColor.BackColor = Options.PanelColor;
 			pnFontColor.BackColor = Options.FontColor;
 			cbURLAction.SelectedIndex = Options.URLAction;
-			cbxSortAlphabetical.Checked = Options.sortAlphabetical; //s²
+			cbxSortAlphabetical.Checked = Options.sortAlphabetical;
 			cbxShowClock.Checked = Options.showClock;
 			cbxShortcutAlt.Checked = Options.shortcutAlt;
 			cbxShortcutCntrl.Checked = Options.shortcutCntrl;
 			cbxShortcutShift.Checked = Options.shortcutShift;
 			cbxShortcutWin.Checked = Options.shortcutWin;
-            cbxShortcutAltQuick.Checked = Options.shortcutAltQuick;
-            cbxShortcutCntrlQuick.Checked = Options.shortcutCntrlQuick;
-            cbxShortcutShiftQuick.Checked = Options.shortcutShiftQuick;
-            cbxShortcutWinQuick.Checked = Options.shortcutWinQuick;
+			cbxShortcutAltQuick.Checked = Options.shortcutAltQuick;
+			cbxShortcutCntrlQuick.Checked = Options.shortcutCntrlQuick;
+			cbxShortcutShiftQuick.Checked = Options.shortcutShiftQuick;
+			cbxShortcutWinQuick.Checked = Options.shortcutWinQuick;
 			cbxShowFoldersBeforeEntries.Checked = Options.foldersFirst;
 			cbxShowSearch.Checked = Options.showSearch;
 			cbxShowLastOne.Checked = Options.showLastOne;
+			edAutoTypeDelay.Value = Math.Max(0, Math.Min(10000, Options.autoTypeDelay));
 			txtShortcutKey.Text = Options.shortcutKey;
-            txtShortcutKeyQuick.Text = Options.shortcutKeyQuick;
+			txtShortcutKeyQuick.Text = Options.shortcutKeyQuick;
+
 			drop_items = new List<StartGroupDropdown>();
 			StartGroupDropdown drop = new StartGroupDropdown("", "Root Group", 0);
 			drop_cur_item = drop;
 			drop_items.Add(drop);
-			if (Host.Database != null && Host.Database.IsOpen)
+			if (Host != null && Host.Database != null && Host.Database.IsOpen)
 			{
 				PwGroup cur_group = Host.Database.RootGroup;
 				add_sub_groups(cur_group, 0, Options.startGroupUUID);
@@ -82,31 +96,39 @@ namespace KPFloatingPanel
 			cbStartGroup.SelectedItem = drop_cur_item;
 			AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			AutoScaleMode = AutoScaleMode.Font;
-
 		}
 
 		private void btOk_Click(object sender, EventArgs e)
 		{
+			Options.themeMode = cbTheme.SelectedIndex;
+			Options.searchDirectOnPanel = cbxDirectSearch.Checked;
+			Options.showDatabaseName = cbxShowDatabaseName.Checked;
+			Options.compactMode = cbxCompactMode.Checked;
+
 			Options.Transparency = edPercent.Value;
 			Options.PanelColor = pnPanelColor.BackColor;
 			Options.FontColor = pnFontColor.BackColor;
 			Options.URLAction = cbURLAction.SelectedIndex;
-			Options.sortAlphabetical = cbxSortAlphabetical.Checked; //s²
+			Options.sortAlphabetical = cbxSortAlphabetical.Checked;
 			Options.showClock = cbxShowClock.Checked;
-			Options.startGroupUUID = ((StartGroupDropdown)cbStartGroup.SelectedItem).uuid;
+			StartGroupDropdown selGroup = cbStartGroup.SelectedItem as StartGroupDropdown;
+			if (selGroup != null) {
+				Options.startGroupUUID = selGroup.uuid;
+			}
 			Options.shortcutAlt = cbxShortcutAlt.Checked;
 			Options.shortcutCntrl = cbxShortcutCntrl.Checked;
 			Options.shortcutShift = cbxShortcutShift.Checked;
 			Options.shortcutWin = cbxShortcutWin.Checked;
-            Options.shortcutAltQuick = cbxShortcutAltQuick.Checked;
-            Options.shortcutCntrlQuick = cbxShortcutCntrlQuick.Checked;
-            Options.shortcutShiftQuick = cbxShortcutShiftQuick.Checked;
-            Options.shortcutWinQuick = cbxShortcutWinQuick.Checked;
+			Options.shortcutAltQuick = cbxShortcutAltQuick.Checked;
+			Options.shortcutCntrlQuick = cbxShortcutCntrlQuick.Checked;
+			Options.shortcutShiftQuick = cbxShortcutShiftQuick.Checked;
+			Options.shortcutWinQuick = cbxShortcutWinQuick.Checked;
 			Options.foldersFirst = cbxShowFoldersBeforeEntries.Checked;
-            Options.shortcutKeyQuick = txtShortcutKeyQuick.Text.ToUpper();
-            Options.shortcutKey = txtShortcutKey.Text.ToUpper();
+			Options.shortcutKeyQuick = txtShortcutKeyQuick.Text.ToUpper();
+			Options.shortcutKey = txtShortcutKey.Text.ToUpper();
 			Options.showSearch = cbxShowSearch.Checked;
 			Options.showLastOne = cbxShowLastOne.Checked;
+			Options.autoTypeDelay = (int)edAutoTypeDelay.Value;
 			Options.Save();
 
 			DialogResult = DialogResult.OK;

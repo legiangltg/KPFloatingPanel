@@ -47,8 +47,17 @@ namespace KPFloatingPanel
 			this.tmClock = new System.Windows.Forms.Timer(this.components);
 			this.ilIcons = new System.Windows.Forms.ImageList(this.components);
 			this.timer_search = new System.Windows.Forms.Timer(this.components);
+			this.picIcon = new System.Windows.Forms.PictureBox();
+			this.pnlSearch = new System.Windows.Forms.Panel();
+			this.picSearchGlyph = new System.Windows.Forms.PictureBox();
+			this.txtSearch = new System.Windows.Forms.TextBox();
+			this.btnMenu = new System.Windows.Forms.Label();
+			this.ttTips = new System.Windows.Forms.ToolTip(this.components);
 			this.pmMainMenu.SuspendLayout();
 			this.pmPasswords.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picIcon)).BeginInit();
+			this.pnlSearch.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picSearchGlyph)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lbClock
@@ -121,7 +130,6 @@ namespace KPFloatingPanel
 			this.LastOne,
             this.toolStripTextSearch,
             this.toolStripSeparator3
-            
             });
 			this.pmPasswords.Name = "pmPasswords";
 			this.pmPasswords.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -136,7 +144,7 @@ namespace KPFloatingPanel
 			// 
 			// toolStripMenuSaveDatabase
 			// 
-			this.toolStripMenuSaveDatabase.Image = global::KPFloatingPanel.Properties.Resources.B16x16_FileSave;
+			this.toolStripMenuSaveDatabase.Image = IconHelper.CreateSaveIcon(16);
 			this.toolStripMenuSaveDatabase.Name = "toolStripMenuSaveDatabase";
 			resources.ApplyResources(this.toolStripMenuSaveDatabase, "toolStripMenuSaveDatabase");
 			this.toolStripMenuSaveDatabase.Click += new System.EventHandler(this.toolStripMenuSaveDatabase_Click);
@@ -169,26 +177,76 @@ namespace KPFloatingPanel
 			// 
 			// ilIcons
 			// 
-			this.ilIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilIcons.ImageStream")));
 			this.ilIcons.TransparentColor = System.Drawing.Color.Transparent;
-			this.ilIcons.Images.SetKeyName(0, "0.ico");
-			this.ilIcons.Images.SetKeyName(1, "1.ico");
-			this.ilIcons.Images.SetKeyName(2, "2.ico");
-			this.ilIcons.Images.SetKeyName(3, "3.ico");
-			this.ilIcons.Images.SetKeyName(4, "4.ico");
-			this.ilIcons.Images.SetKeyName(5, "5.ico");
-			this.ilIcons.Images.SetKeyName(6, "B16x16_LockWorkspace.png");
-			this.ilIcons.Images.SetKeyName(7, "x.png");
-			this.ilIcons.Images.SetKeyName(8, "3.png");
-			this.ilIcons.Images.SetKeyName(9, "2.png");
-			this.ilIcons.Images.SetKeyName(10, "4.png");
-			this.ilIcons.Images.SetKeyName(11, "5.png");
-			this.ilIcons.Images.SetKeyName(12, "1.png");
 			// 
 			// timer_search
 			// 
 			this.timer_search.Interval = 100;
 			this.timer_search.Tick += new System.EventHandler(this.timer_search_Tick);
+			// 
+			// picIcon
+			// 
+			this.picIcon.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.picIcon.Location = new System.Drawing.Point(6, 4);
+			this.picIcon.Name = "picIcon";
+			this.picIcon.Size = new System.Drawing.Size(26, 26);
+			this.picIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+			this.picIcon.TabIndex = 2;
+			this.picIcon.TabStop = false;
+			this.picIcon.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picIcon_MouseDown);
+			this.picIcon.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picIcon_MouseMove);
+			this.picIcon.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picIcon_MouseUp);
+			// 
+			// pnlSearch
+			// 
+			this.pnlSearch.Controls.Add(this.picSearchGlyph);
+			this.pnlSearch.Controls.Add(this.txtSearch);
+			this.pnlSearch.Location = new System.Drawing.Point(36, 4);
+			this.pnlSearch.Name = "pnlSearch";
+			this.pnlSearch.Size = new System.Drawing.Size(160, 26);
+			this.pnlSearch.TabIndex = 3;
+			this.pnlSearch.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlSearch_Paint);
+			this.pnlSearch.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnlSearch_MouseDown);
+			this.pnlSearch.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnlSearch_MouseMove);
+			this.pnlSearch.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pnlSearch_MouseUp);
+			// 
+			// picSearchGlyph
+			// 
+			this.picSearchGlyph.BackColor = System.Drawing.Color.Transparent;
+			this.picSearchGlyph.Location = new System.Drawing.Point(5, 5);
+			this.picSearchGlyph.Name = "picSearchGlyph";
+			this.picSearchGlyph.Size = new System.Drawing.Size(16, 16);
+			this.picSearchGlyph.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+			this.picSearchGlyph.TabIndex = 0;
+			this.picSearchGlyph.TabStop = false;
+			this.picSearchGlyph.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picSearchGlyph_MouseDown);
+			// 
+			// txtSearch
+			// 
+			this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+			this.txtSearch.Location = new System.Drawing.Point(24, 4);
+			this.txtSearch.Name = "txtSearch";
+			this.txtSearch.Size = new System.Drawing.Size(130, 17);
+			this.txtSearch.TabIndex = 1;
+			this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+			this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
+			this.txtSearch.Enter += new System.EventHandler(this.txtSearch_Enter);
+			this.txtSearch.Leave += new System.EventHandler(this.txtSearch_Leave);
+			// 
+			// btnMenu
+			// 
+			this.btnMenu.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.btnMenu.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+			this.btnMenu.Location = new System.Drawing.Point(202, 4);
+			this.btnMenu.Name = "btnMenu";
+			this.btnMenu.Size = new System.Drawing.Size(20, 26);
+			this.btnMenu.TabIndex = 4;
+			this.btnMenu.Text = "⋮";
+			this.btnMenu.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.btnMenu.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnMenu_MouseDown);
+			this.btnMenu.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btnMenu_MouseMove);
+			this.btnMenu.MouseUp += new System.Windows.Forms.MouseEventHandler(this.btnMenu_MouseUp);
 			// 
 			// MainForm
 			// 
@@ -196,7 +254,10 @@ namespace KPFloatingPanel
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Info;
 			this.ContextMenuStrip = this.pmMainMenu;
+			this.Controls.Add(this.picIcon);
+			this.Controls.Add(this.pnlSearch);
 			this.Controls.Add(this.lbClock);
+			this.Controls.Add(this.btnMenu);
 			this.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.DoubleBuffered = true;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -207,10 +268,15 @@ namespace KPFloatingPanel
 			this.ShowInTaskbar = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.TopMost = true;
+			this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
 			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lbClock_MouseUp);
 			this.pmMainMenu.ResumeLayout(false);
 			this.pmPasswords.ResumeLayout(false);
 			this.pmPasswords.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picIcon)).EndInit();
+			this.pnlSearch.ResumeLayout(false);
+			this.pnlSearch.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picSearchGlyph)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -235,5 +301,11 @@ namespace KPFloatingPanel
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem LastOne;
+		private System.Windows.Forms.PictureBox picIcon;
+		private System.Windows.Forms.Panel pnlSearch;
+		private System.Windows.Forms.PictureBox picSearchGlyph;
+		private System.Windows.Forms.TextBox txtSearch;
+		private System.Windows.Forms.Label btnMenu;
+		private System.Windows.Forms.ToolTip ttTips;
 	}
 }

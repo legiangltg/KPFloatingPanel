@@ -21,6 +21,12 @@ namespace KPFloatingPanel {
 		internal bool shortcutCntrl;
 		internal bool shortcutWin;
 
+		internal bool searchDirectOnPanel;
+		internal int themeMode; // 0 = Modern Dark, 1 = Modern Light, 2 = Custom
+		internal bool compactMode;
+		internal bool showDatabaseName;
+		internal int autoTypeDelay; // in milliseconds (default 500ms)
+
         internal string shortcutKeyQuick;
         internal bool shortcutShiftQuick;
         internal bool shortcutAltQuick;
@@ -45,7 +51,12 @@ namespace KPFloatingPanel {
 				showClock = Convert.ToBoolean((string)Key.GetValue("ShowClock"));
 				showSearch = Convert.ToBoolean((string)Key.GetValue("ShowSearch"));
 				showLastOne = Convert.ToBoolean((string)Key.GetValue("ShowLastOne"));
-				foldersFirst = Convert.ToBoolean((string)Key.GetValue("foldersFirst"));
+				foldersFirst = Convert.ToBoolean((string)Key.GetValue("foldersFirst", foldersFirst.ToString()));
+				searchDirectOnPanel = Convert.ToBoolean((string)Key.GetValue("searchDirectOnPanel", "True"));
+				themeMode = Convert.ToInt32(Key.GetValue("themeMode", 0));
+				compactMode = Convert.ToBoolean((string)Key.GetValue("compactMode", "False"));
+				showDatabaseName = Convert.ToBoolean((string)Key.GetValue("ShowDatabaseName", "False"));
+				autoTypeDelay = Convert.ToInt32(Key.GetValue("AutoTypeDelay", 500));
 
 				shortcutShift = Convert.ToBoolean((string)Key.GetValue("shortcutShift"));
 				shortcutAlt = Convert.ToBoolean((string)Key.GetValue("shortcutAlt"));
@@ -80,6 +91,11 @@ namespace KPFloatingPanel {
 				Key.SetValue("ShowSearch", showSearch); //s²
 				Key.SetValue("ShowLastOne", showLastOne); //s²
 				Key.SetValue("foldersFirst", foldersFirst); //s²
+				Key.SetValue("searchDirectOnPanel", searchDirectOnPanel);
+				Key.SetValue("themeMode", themeMode);
+				Key.SetValue("compactMode", compactMode);
+				Key.SetValue("ShowDatabaseName", showDatabaseName);
+				Key.SetValue("AutoTypeDelay", autoTypeDelay);
 				Key.SetValue("startGroupUUID", startGroupUUID);
 				Key.SetValue("shortcutKey", shortcutKey);
 				Key.SetValue("shortcutAlt", shortcutAlt);
@@ -111,6 +127,11 @@ namespace KPFloatingPanel {
 			showSearch = true;
 			showLastOne = true;
 			foldersFirst = true;
+			searchDirectOnPanel = true;
+			themeMode = 0; // Modern Dark by default
+			compactMode = false;
+			showDatabaseName = false;
+			autoTypeDelay = 500;
             shortcutAlt = shortcutCntrl = shortcutShift = shortcutWin = shortcutAltQuick = shortcutCntrlQuick = shortcutShiftQuick = shortcutWinQuick = false;
             shortcutKey = shortcutKeyQuick = "";
 			Load();
